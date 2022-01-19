@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 project(GoGame VERSION 0.1.0)
-set(EXEC ${CMAKE_PROJECT_NAME}.app)
+set(EXEC ${CMAKE_PROJECT_NAME}.out)
 
 set(BUILD_SHARED_LIBS OFF)
 
@@ -33,6 +33,12 @@ target_link_libraries(
     sfml-network 
     sfml-system 
     sfml-window
+)
+
+add_custom_command(
+    TARGET ${EXEC} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXEC}>/resources
 )
 
 
