@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Libraries and builds
+lib/**
+build
