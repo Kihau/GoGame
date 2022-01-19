@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 project(GoGame VERSION 0.1.0)
-set(NAME ${CMAKE_PROJECT_NAME})
+set(EXEC ${CMAKE_PROJECT_NAME}.app)
 
 set(BUILD_SHARED_LIBS OFF)
 
 include(FetchContent)
 FetchContent_Declare(sfml
     GIT_REPOSITORY "https://github.com/SFML/SFML.git"
-    GIT_TAG "origin/master"
+    GIT_TAG "2.5.1"
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/sfml"
 )
 
@@ -24,10 +24,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-add_executable(${NAME} ${SOURCES})
+add_executable(${EXEC} ${SOURCES})
 
 target_link_libraries(
-    ${NAME} 
+    ${EXEC} 
     sfml-audio 
     sfml-graphics 
     sfml-network 
