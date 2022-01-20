@@ -3,16 +3,14 @@
 Game::Game()
 {
     this->dt = 0.0f;
-    this->window = new sf::RenderWindow(sf::VideoMode(width, height), "GoGame by Kihau");
+    // this->window = new sf::RenderWindow(sf::VideoMode(width, height), "GoGame by Kihau");
+    this->window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), "GoGame by Kihau");
     this->tex.loadFromFile("resources/textures/go.png", sf::IntRect(0, 0, 1920, 1080));
     this->board = sf::Sprite(tex);
     this->board.scale(width / 1920.0f, height / 1080.0f);
 }
 
-Game::~Game()
-{
-	delete this->window;
-}
+Game::~Game() { }
 
 void Game::run() {
     while(this->window->isOpen()) {
