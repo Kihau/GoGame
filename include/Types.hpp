@@ -1,17 +1,22 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-using i8  = char;
-using i16 = short;
-using i32 = int;
-using i64 = long;
+#include "stdint.h"
 
-using u8  = unsigned char;
-using u16 = unsigned short;
-using u32 = unsigned int;
-using u64 = unsigned long;
+using i8  = int8_t;
+using i16 = int16_t;
+using i32 = int32_t;
+using i64 = int64_t;
 
-using f32 = float;
-using f64 = double;
+using u8  = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+
+using f32  = _Float32;
+using f64  = _Float64;
+using f128 = _Float128;
+// joke alias - remove it later
+using f80  = __float80;
 
 #endif

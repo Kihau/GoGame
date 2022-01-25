@@ -4,36 +4,31 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 
+#include "Types.hpp"
 #include "Board.hpp"
 
 class Game  
 {
 private:
-	// true - white, false - black
-	bool player = true;
 	const int width = 1280;
 	const int height = 720;
+
 	std::unique_ptr<sf::RenderWindow> window;
 
+	Board board;
+
 	// new target for texture generation
-	sf::RenderTexture target;
+	sf::View gameView;
 
-	sf::Sprite bg;
-	sf::Texture tex;
+	sf::Texture bg_tex;
+	sf::Sprite background;
 
-	sf::Sprite board;
-	sf::Texture tex2;
-
-	sf::Sprite white;
-	sf::Texture tex3;
-
-	int dots[19][19] = {};
-
-	float dt;
+	f32 dt;
 
 private:
 	void render();
 	void update();
+	void dispatchEvents();
 	void log();
 
 public:

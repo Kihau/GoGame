@@ -33,4 +33,4 @@
 
 # Libraries and builds
 lib/**
-build
+build/**

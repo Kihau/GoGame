@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 project(GoGame VERSION 0.1.0)
-set(EXEC ${CMAKE_PROJECT_NAME}.out)
+set(EXEC ${CMAKE_PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -23,17 +23,8 @@ file(
     src/*.cpp
 )
 
-file(
-    GLOB 
-    TESTS 
-    tests/*.cpp
-)
-
 include_directories(${CMAKE_SOURCE_DIR}/include)
 add_executable(${EXEC} ${SOURCES})
-
-add_executable(${EXEC}-test ${TESTS})
-add_test(NAME ${EXEC}-test COMMAND ${EXEC}-test)
 
 target_link_libraries(
     ${EXEC} 
