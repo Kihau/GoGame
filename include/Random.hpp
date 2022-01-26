@@ -8,16 +8,16 @@
 // Extention class for random number generation
 class Random {
 private:
-    static u32 seed;
+    //static u32 seed;
 
 public:
     inline static void init() {
-        Random::seed = time(nullptr);
-        srand(Random::seed);
+        //Random::seed = time(nullptr);
+        srand(time(nullptr));
     }
 
     inline static void init(u32 seed) {
-        Random::seed = seed;
+        //Random::seed = seed;
         srand(seed);
     }
 

@@ -36,7 +36,6 @@ bool StoneGroup::canAdd(sf::Vector2i pos, i32 state) {
 
 bool StoneGroup::isAdjacent(sf::Vector2i pos) {
     for (auto stone : this->group) {
-
         if (stone.x == pos.x) {
             if (stone.y == pos.y - 1 || stone.y == pos.y + 1) {
                 return true;

@@ -6,6 +6,8 @@
 
 #include "Types.hpp"
 #include "Board.hpp"
+#include "gui/Button.hpp"
+#include "states/GameState.hpp"
 
 class Game  
 {
@@ -15,6 +17,7 @@ private:
 
 	std::unique_ptr<sf::RenderWindow> window;
 
+	Button btn;
 	Board board;
 
 	// new target for texture generation
@@ -22,8 +25,14 @@ private:
 
 	sf::Texture bg_tex;
 	sf::Sprite background;
+	sf::Font font;
 
 	f32 dt;
+
+	sf::Texture wbag_tex;
+	sf::Texture bbag_tex;
+	sf::Sprite white_bag;
+	sf::Sprite black_bag;
 
 private:
 	void render();

@@ -1,11 +1,11 @@
 #ifndef STONE_H
 #define STONE_H
 
-// enum State {
-//     None = 0,
-//     White = 1,
-//     Black = 2,
-// };
+enum State {
+    None = 0,
+    White = 1,
+    Black = 2,
+};
 
 // sf::Color getColor(State state) {
 //     switch (state)

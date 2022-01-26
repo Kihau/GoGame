@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "Types.hpp"
 #include "Stone.hpp"
 #include "StoneGroup.hpp"
@@ -23,6 +24,10 @@ private:
     sf::Sprite stone_sprite;
     const f32 stone_scale = 0.07f;
 
+    // CHANGE IT TO ENUM
+    // 0 - none
+    // 1 - black
+    // 2 - white
     i32 turn = 1;
     sf::Vector2i last_highlight;
     sf::Vector2i last_move;
@@ -32,6 +37,9 @@ private:
     void setHighlight(sf::Vector2f pos);
     void clearHighlight();
 
+    sf::SoundBuffer buffer;
+    sf::Sound stone_sound;
+
 public:
     Board();
 
@@ -40,6 +48,7 @@ public:
     ~Board();
     void draw(sf::RenderTarget&, sf::RenderStates) const;
     void update(sf::Vector2f pos, bool);
+    void setTurn(i32);
 };
 
 #endif

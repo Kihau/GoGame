@@ -18,6 +18,21 @@ Game::Game()
 
     std::cout << window->getSize().x << " " << window->getSize().y;
 
+    this->font.loadFromFile("resources/fonts/dpcomic.ttf");
+
+
+    this->bbag_tex.loadFromFile("resources/textures/black-bag.png");
+    this->wbag_tex.loadFromFile("resources/textures/white-bag.png");
+
+    this->white_bag.setTexture(this->wbag_tex);
+    this->white_bag.setPosition(1050, 350);
+    this->white_bag.rotate(-90.0f);
+    this->white_bag.setColor(sf::Color(220, 220, 220));
+    this->black_bag.setTexture(this->bbag_tex);
+    this->black_bag.setPosition(1050, 1000);
+    this->black_bag.rotate(-90.0f);
+    this->black_bag.setColor(sf::Color(220, 220, 220));
+
 }
 
 Game::~Game() { }
@@ -31,9 +46,24 @@ void Game::run() {
 }
 
 void Game::render() {
+    //sf::Text text;
+    //text.setFont(this->font);
+    //text.setPosition(100.0f, 100.0f);
+    //text.setCharacterSize(150);
+    //text.setString("A Very Fancy Text");
+    //text.setColor(sf::Color::Black);
+
     this->window->clear(sf::Color::Black);
+
     this->window->draw(this->background);
     this->window->draw(this->board);
+
+    this->window->draw(this->white_bag);
+    this->window->draw(this->black_bag);
+
+    //this->window->draw(text);
+    this->window->draw(this->btn);
+
     this->window->display();
 }
 
@@ -61,6 +91,26 @@ void Game::dispatchEvents() {
 
             this->board.update(map, true);
             break;
+        }
+
+        case sf::Event::MouseButtonPressed: {
+            auto pos = sf::Mouse::getPosition(*window);
+            auto map = this->window->mapPixelToCoords(pos);
+
+            auto wb = this->white_bag.getGlobalBounds();
+            std::cout << wb.left << " " << wb.width << " " << wb.left + wb.width << "\n";            
+            if (map.x >= wb.left && map.x <= wb.left + wb.width
+                && map.y >= wb.top && map.y <= wb.top + wb.height) {
+                    this->board.setTurn(2);
+                    std::cout << "pressed white\n";
+            }
+
+            auto bb = this->black_bag.getGlobalBounds();
+            if (map.x >= bb.left && map.x <= bb.left + bb.width
+                && map.y >= bb.top && map.y <= bb.top + bb.height) {
+                    this->board.setTurn(1);
+                    std::cout << "pressed\n";
+            }
         }
 
         case sf::Event::MouseMoved: {

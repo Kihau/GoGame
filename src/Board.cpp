@@ -42,9 +42,16 @@ Board::Board() {
     this->last_move = sf::Vector2i(-1, -1);
     this->red_dot.setFillColor(sf::Color::Red);
     this->red_dot.setRadius(this->stone_sprite.getGlobalBounds().width / 6);
+
+    this->buffer.loadFromFile("resources/audio/stone.wav");
+    this->stone_sound.setBuffer(this->buffer);
 }
 
 Board::~Board() {}
+
+void Board::setTurn(int turn) {
+    this->turn = turn;
+}
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // draw board
@@ -62,75 +69,6 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if (this->last_highlight.x != -1) 
         target.draw(this->stone_sprite);
 }
-
-// void old_dummy_cringe_function() {
-//     bool added = false;
-//     std::vector<size_t> added_groups;
-//     for (auto i = 0; i < this->groups.size(); i++) {
-//         if (this->groups[i].canAdd(sf::Vector2i(x, y), this->turn)) {
-//             this->groups[i].addStone(sf::Vector2i(x, y));
-//             added_groups.push_back(i);
-//             added = true;
-//         }
-            
-//     }
-
-//     if (added) {
-//         StoneGroup combined_group(this->turn);
-//         for (auto i : added_groups) {
-//             combined_group.combineGroups(groups[i]);
-//         }
-
-//         std::sort(added_groups.begin(), added_groups.end(), std::greater<size_t>());
-//         for (auto i : added_groups) {
-//             this->groups[i] = this->groups.back();
-//             this->groups.pop_back();
-//         }
-
-//         this->groups.push_back(combined_group);
-//     } else this->groups.push_back(StoneGroup(sf::Vector2i(x, y), this->turn));
-
-        // std::vector<size_t> adjacent_groups;
-        // for (auto i = 0; i < groups.size(); i++) {
-        //     if (groups[i].isAdjacent(sf::Vector2i(x, y))) {   
-        //         adjacent_groups.push_back(i);
-        //     }        
-        // }
-
-        // std::vector<size_t> to_erase;
-
-        // std::sort(
-        //     adjacent_groups.begin(), 
-        //     adjacent_groups.end(), 
-        //     std::greater<size_t>()
-        // );
-
-        // for (auto i : adjacent_groups) {
-        //     if (this->groups[i].checkLibreties(this->stones, this->size) == 0) {
-        //         this->groups[i].removeStones(this->stones, this->size);
-
-        //         this->groups[i] = this->groups.back();
-        //         this->groups.pop_back();
-        //     }
-        // }
-
-        /// OLDER OLD
-
-        // std::vector<size_t> to_erase;
-        // for (auto i = 0; i < groups.size(); i++) {
-        //     if (groups[i].checkLibreties(this->stones, this->size) == 0)
-        //         to_erase.push_back(i);
-        // }
-
-        // std::sort(to_erase.begin(), to_erase.end(), std::greater<size_t>());
-        // for (auto i : to_erase) {
-        //     groups[i].removeStones(this->stones, this->size);
-
-        //     this->groups[i] = this->groups.back();
-        //     this->groups.pop_back();
-        // }
-// }
-
 
 /// TODO: change: tile size and position of starting tile are hardcoded
 void Board::makeMove(sf::Vector2f pos) {
@@ -190,6 +128,8 @@ void Board::makeMove(sf::Vector2f pos) {
             stone.sprite.setColor(sf::Color::White);
         }
 
+        this->stone_sound.play();
+
         //////////////////////////////////////////////////////
         /// Librety checking logic ///////////////////////////
         std::vector<size_t> adjacent_groups;
@@ -213,6 +153,14 @@ void Board::makeMove(sf::Vector2f pos) {
 
                 this->groups[i] = this->groups.back();
                 this->groups.pop_back();
+            }
+        }
+
+        for (auto it = groups.begin(); it != groups.end(); it++) {
+            if (it->containsStone(sf::Vector2i(x, y)) && it->checkLibreties(stones, size) == 0) {
+                it->removeStones(this->stones, this->size);
+                groups.erase(it);
+                break;
             }
         }
         //////////////////////////////////////////////////////

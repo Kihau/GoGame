@@ -23,8 +23,20 @@ file(
     src/*.cpp
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
-add_executable(${EXEC} ${SOURCES})
+file(
+    GLOB 
+    GUI 
+    src/gui/*.cpp
+)
+
+file(
+    GLOB 
+    STATES 
+    src/states/*.cpp
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/include/)
+add_executable(${EXEC} ${SOURCES} ${STATES} ${GUI})
 
 target_link_libraries(
     ${EXEC} 
