@@ -13,6 +13,14 @@ StoneGroup::~StoneGroup() {
 
 }
 
+size_t StoneGroup::getSize() {
+    return this->group.size();
+}
+
+i32 StoneGroup::getState() {
+    return this->state;
+}
+
 
 bool StoneGroup::canAdd(sf::Vector2i pos, i32 state) {
     if (this->state != state)

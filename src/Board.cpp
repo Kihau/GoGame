@@ -6,7 +6,7 @@
 //      generate texture by looping tiles sprite
 //      draw generated texture on top of a yellowish box
 //      make generated texture a drawing sprite
-// generate board sprites (from 10 to 30 ???)
+// generate board sprites (from 5 to 30 ???)
 Board::Board() {
 
     // generate board sprite
@@ -52,6 +52,30 @@ Board::~Board() {}
 void Board::setTurn(int turn) {
     this->turn = turn;
 }
+
+std::string Board::getTurnString() {
+    if (this->turn == 1)
+        return "Black";
+    else return "White";
+}
+
+void Board::changeSwap() {
+    this->swap_turns = !this->swap_turns;
+}
+
+bool Board::getSwapState() {
+    return this->swap_turns;
+}
+
+i32 Board::getScoreWhite() {
+    return this->score_white;
+}
+
+
+i32 Board::getScoreBlack() {
+    return this->score_black;
+}
+
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // draw board
@@ -119,13 +143,18 @@ void Board::makeMove(sf::Vector2f pos) {
         } else this->groups.push_back(StoneGroup(sf::Vector2i(x, y), this->turn));
         //////////////////////////////////////////////////////
 
-
         if (this->turn == 1) {
-            this->turn = 2;
             stone.sprite.setColor(sf::Color::Black);
         } else {
-            this->turn = 1;
             stone.sprite.setColor(sf::Color::White);
+        }
+
+        if (this->swap_turns) {
+            if (this->turn == 1) {
+                this->turn = 2;
+            } else {
+                this->turn = 1;
+            }
         }
 
         this->stone_sound.play();
@@ -150,6 +179,13 @@ void Board::makeMove(sf::Vector2f pos) {
         for (auto i : adjacent_groups) {
             if (this->groups[i].checkLibreties(this->stones, this->size) == 0) {
                 this->groups[i].removeStones(this->stones, this->size);
+
+                auto size = this->groups[i].getSize();
+                auto state = this->groups[i].getState();
+
+                if (state == 1) 
+                    this->score_white += size;
+                else this->score_black += size;
 
                 this->groups[i] = this->groups.back();
                 this->groups.pop_back();

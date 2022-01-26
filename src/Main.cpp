@@ -33,8 +33,25 @@ int countLen(char* cstring) {
     return countLen(cstring + 1) + 1;
 }
 
+class Thingy {
+public:
+    int num;
+    Thingy(bool epic_flag, int num) {
+        this->num = num;
+
+        if (epic_flag)
+            *this = Thingy(false, 23);
+    }
+};
+
 int main() {
     Random::init();
+
+    //char znaki[] = "234";
+    //char array[] = { '2', '3', '4', '\0' };
+
+    //znaki[1] = '2';
+    //std::cout << znaki << "\n";
 
     {
         sf::RectangleShape rect(sf::Vector2f(100, 100));
@@ -42,6 +59,9 @@ int main() {
         rect.setOutlineColor(sf::Color::Black);
         rect.setOutlineThickness(3.3f);
     }
+
+    //Thingy thing(true, 10);
+    //std::cout << thing.num << "\n";
 
     Game go_game;
     go_game.run();

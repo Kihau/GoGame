@@ -2,12 +2,17 @@
 #define GAME_H
 	
 #include <iostream>
+#include <stack>
+#include <memory>
 #include "SFML/Graphics.hpp"
 
 #include "Types.hpp"
 #include "Board.hpp"
 #include "gui/Button.hpp"
+
+//#include "states/IState.hpp"
 #include "states/GameState.hpp"
+#include "states/MenuState.hpp"
 
 class Game  
 {
@@ -15,30 +20,10 @@ private:
 	const int width = 1280;
 	const int height = 720;
 
-	std::unique_ptr<sf::RenderWindow> window;
-
-	Button btn;
-	Board board;
-
+	sf::RenderWindow* window;
 	// new target for texture generation
 	sf::View gameView;
-
-	sf::Texture bg_tex;
-	sf::Sprite background;
-	sf::Font font;
-
-	f32 dt;
-
-	sf::Texture wbag_tex;
-	sf::Texture bbag_tex;
-	sf::Sprite white_bag;
-	sf::Sprite black_bag;
-
-private:
-	void render();
-	void update();
-	void dispatchEvents();
-	void log();
+	std::stack<std::shared_ptr<IState>> states;
 
 public:
 	Game();

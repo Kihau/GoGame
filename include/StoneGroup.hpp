@@ -23,6 +23,9 @@ public:
     bool canAdd(sf::Vector2i pos, i32 state);
     bool isAdjacent(sf::Vector2i pos);
 
+    size_t getSize();
+    i32 getState();
+
     bool isEmpty();
 
     bool sameState(i32 state);

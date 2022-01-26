@@ -28,6 +28,11 @@ private:
     // 0 - none
     // 1 - black
     // 2 - white
+
+    i32 score_white = 0;
+    i32 score_black = 0;
+
+    bool swap_turns = true;
     i32 turn = 1;
     sf::Vector2i last_highlight;
     sf::Vector2i last_move;
@@ -49,6 +54,11 @@ public:
     void draw(sf::RenderTarget&, sf::RenderStates) const;
     void update(sf::Vector2f pos, bool);
     void setTurn(i32);
+    std::string getTurnString();
+    void changeSwap();
+    bool getSwapState();
+    i32 getScoreWhite();
+    i32 getScoreBlack();
 };
 
 #endif
