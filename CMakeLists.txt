@@ -48,7 +48,7 @@ target_link_libraries(
 )
 
 # add_custom_target(copy_res
-#     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/copy-res.cmake
+#     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/copy-res.cmake.old
 # )
 
 # add_dependencies(${EXEC} copy_res)

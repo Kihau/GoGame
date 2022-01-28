@@ -1,6 +1,8 @@
 #include "Game.hpp"
 #include "Random.hpp"
 
+#include "Types.hpp"
+
 /*  TO DO LIST: 
 -----------------------------------------------------------------------------
 - Mechanics improvements:
@@ -44,6 +46,8 @@ public:
     }
 };
 
+#include <math.h>
+
 int main() {
     Random::init();
 
@@ -60,8 +64,15 @@ int main() {
         rect.setOutlineThickness(3.3f);
     }
 
+    //f80 a = 1.1;
+    //std::cout << sizeof(long double) << "\n";
+    //f128 b = 1.1;
+    //std::cout << b << "\n";
+
     //Thingy thing(true, 10);
     //std::cout << thing.num << "\n";
+
+    //std::cout << sizeof(i128) << "\n";
 
     Game go_game;
     go_game.run();

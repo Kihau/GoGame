@@ -1,7 +1,6 @@
 #include "Game.hpp"
 
-Game::Game()
-{
+Game::Game() {
     this->window = new sf::RenderWindow(
         sf::VideoMode(width, height), 
         "GoGame by Kihau"
@@ -13,6 +12,17 @@ Game::Game()
 
     auto init_state = std::make_shared<MenuState>(this->window);
     this->states.push(init_state);
+
+    this->something.loadFromFile("resources/textures/white-sheet.png");
+    this->idk.setTexture(this->something);
+    this->anim = Animation(&idk);
+    this->idk.setPosition(200, 450);
+    this->idk.setScale(1.5f, 1.5f);
+
+    this->anim.addFrame({ sf::IntRect(0, 0, 240, 240), 0.08 });
+    this->anim.addFrame({ sf::IntRect(0, 0, 240, 240), 0.08 });
+    for (int i = 0; i < 8; i++)
+        this->anim.addFrame({ sf::IntRect(i*240, 0, 240, 240), 0.08 });
 }
 
 Game::~Game() { 
@@ -21,14 +31,57 @@ Game::~Game() {
 
 void Game::run() {
     while(this->window->isOpen() && !this->states.empty()) {
+        auto currTime = this->gameClock.getElapsedTime();
 
-        this->states.top()->update();
+        //this->dispatchEvents();
+        //this->logEvents();
 
+        this->states.top()->update(this->events);
+
+        this->events.clear();
         if (this->states.top()->stateChange(this->states))
             continue;
 
+        this->anim.update(this->deltaTime.asSeconds());
+
         this->window->clear(sf::Color::Black);
+
         this->states.top()->draw();
+        //this->window->draw(this->idk);
         this->window->display();
+
+        this->deltaTime = currTime - this->prevTime;
+        this->logTime = this->logTime + this->deltaTime;
+
+        this->prevTime = currTime;
+    }
+}
+
+void Game::dispatchEvents() {
+    sf::Event event;
+    while (this->window->pollEvent(event)) {
+        switch (event.type) {
+            case sf::Event::Closed:
+                this->window->close();
+                break;
+        }
+        this->events.push_back(event);
+    }
+}
+
+void Game::logEvents() {
+    if (this->logTime.asMilliseconds() > this->log_delay) {
+        for (auto e : this->events) {
+            switch (e.type) {
+            case sf::Event::MouseMoved:
+                break;
+            }
+        }
+        
+        auto pos = sf::Mouse::getPosition();
+        std::cout << "Mouse pos x: " << pos.x << " y: " << pos.y << "\n";
+        std::cout << "Delta: " << this->deltaTime.asMicroseconds() << "ms\n";
+
+        this->logTime = sf::Time();
     }
 }

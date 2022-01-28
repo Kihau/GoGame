@@ -21,6 +21,10 @@ void Button::update(sf::Vector2f click_pos) {
     } else this->clicked = false;
 }
 
+void Button::update() {
+
+}
+
 bool Button::clickCallback() {
     return this->clicked;
 }

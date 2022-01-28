@@ -5,13 +5,13 @@
 #include <string>
 #include "SFML/Graphics.hpp"
 
-#include "states/IState.hpp"
+#include "states/State.hpp"
 
 #include "Types.hpp"
 #include "Board.hpp"
 #include "gui/Button.hpp"
 
-class GameState : public IState {
+class GameState : public State {
 private:
     Button btn;
 	std::unique_ptr<Board> board;
@@ -43,8 +43,8 @@ public:
     //GameState();
     GameState(sf::RenderWindow*);
     void draw();
-    void update();
-    bool stateChange(std::stack<std::shared_ptr<IState>>&);
+    void update(const std::vector<sf::Event>&);
+    bool stateChange(std::stack<std::shared_ptr<State>>&);
 };
 
 #endif

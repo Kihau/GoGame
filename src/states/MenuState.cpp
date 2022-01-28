@@ -3,7 +3,7 @@
 MenuState::MenuState(sf::RenderWindow* window) {
     this->window = window;
 
-    this->bg_tex.loadFromFile("resources/textures/go.png");
+    this->bg_tex.loadFromFile("resources/textures/background.png");
     this->background = sf::Sprite(bg_tex);
 
     this->font.loadFromFile("resources/fonts/dpcomic.ttf");
@@ -102,7 +102,7 @@ void MenuState::update() {
     }
 }
 
-bool MenuState::stateChange(std::stack<std::shared_ptr<IState>>& states) {
+bool MenuState::stateChange(std::stack<std::shared_ptr<State>>& states) {
     if (this->push) {
         this->push = false;
         auto state = std::make_shared<GameState>(this->window);

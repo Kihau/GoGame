@@ -10,7 +10,7 @@ GameState::GameState(sf::RenderWindow* window) {
 
     this->dt = 0.0f;
 
-    this->bg_tex.loadFromFile("resources/textures/go.png");
+    this->bg_tex.loadFromFile("resources/textures/background.png");
     this->background = sf::Sprite(bg_tex);
 
     std::cout << window->getSize().x << " " << window->getSize().y;
@@ -175,7 +175,7 @@ void GameState::update() {
     this->buttons[6].setString(s);
 }
 
-bool GameState::stateChange(std::stack<std::shared_ptr<IState>>& states) {
+bool GameState::stateChange(std::stack<std::shared_ptr<State>>& states) {
     if (this->push) {
         this->push = false;
         auto state = std::make_shared<GameState>(this->window);

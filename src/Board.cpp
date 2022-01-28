@@ -12,12 +12,18 @@ Board::Board() {
     // generate board sprite
     /* CODE HERE */
 
+    auto r = 0xfb;
+    auto g = 0xbe;
+    auto b = 0x82;
+
     this->last_highlight = sf::Vector2i(-1, -1);
 
     /// INITIALIZE BOARD
 
-    this->texture.loadFromFile("resources/textures/board.png");
+    this->texture.loadFromFile("resources/textures/board-pattern.png");
     this->sprite.setTexture(this->texture);
+    //this->sprite.setColor(sf::Color(251, 190, 130));
+    //this->sprite.setColor(sf::Color(255, 255, 255));
 
     /// TODO: fix to not be hardcoded
     this->sprite.scale(0.48f, 0.48f);

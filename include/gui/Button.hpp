@@ -1,14 +1,14 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "gui/IGuiComponent.hpp"
+#include "gui/GuiComponent.hpp"
 
 // To implement either of the systems
 // 1. Add c#-like callback event system (and use lamba expression to add callbacks)
 // 2. Create fields for all button events, return their reault via callback methods (if callback method return true - execute some code)
 // 3. Create sfml like event handling method (button.pollEvents())
 
-class Button /*: public IGuiComponent*/ : public sf::Drawable {
+class Button : public GuiComponent {
 private:
     sf::Text caption;
     sf::RectangleShape base;
@@ -20,6 +20,7 @@ public:
     ~Button();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void update(sf::Vector2f);
+    void update();
     bool clickCallback();
 
     void setText(std::string);

@@ -1,7 +1,7 @@
 #ifndef STONE_H
 #define STONE_H
 
-enum State {
+enum Turn {
     None = 0,
     White = 1,
     Black = 2,
