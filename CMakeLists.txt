@@ -47,9 +47,15 @@ target_link_libraries(
     sfml-window
 )
 
+# add_custom_target(copy_res
+#     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/copy-res.cmake
+# )
+
+# add_dependencies(${EXEC} copy_res)
+
 add_custom_command(
     TARGET ${EXEC} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    COMMAND ${CMAKE_COMMAND} -E create_symlink
     ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXEC}>/resources
 )
 
