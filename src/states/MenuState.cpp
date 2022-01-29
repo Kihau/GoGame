@@ -60,15 +60,10 @@ void MenuState::draw() {
     }
 }
 
-void MenuState::update() {
-        sf::Event event;
-    while (this->window->pollEvent(event)) {
+void MenuState::update(const std::vector<sf::Event>& events) {
+    for (auto& event : events) {
         switch (event.type)
         {
-        case sf::Event::Closed:
-            this->window->close();
-            break;
-
         case sf::Event::MouseButtonReleased: {
             auto pos = sf::Mouse::getPosition(*window);
             std::cout << "Relative click - x: " << pos.x << " y: " << pos.y << "\n";

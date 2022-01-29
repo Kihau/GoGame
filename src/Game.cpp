@@ -33,8 +33,8 @@ void Game::run() {
     while(this->window->isOpen() && !this->states.empty()) {
         auto currTime = this->gameClock.getElapsedTime();
 
-        //this->dispatchEvents();
-        //this->logEvents();
+        this->dispatchEvents();
+        this->logEvents();
 
         this->states.top()->update(this->events);
 

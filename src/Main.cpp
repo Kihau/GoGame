@@ -64,6 +64,9 @@ int main() {
         rect.setOutlineThickness(3.3f);
     }
 
+    //const char *test = "Hello";
+    //test[1] = 'a';
+
     //f80 a = 1.1;
     //std::cout << sizeof(long double) << "\n";
     //f128 b = 1.1;

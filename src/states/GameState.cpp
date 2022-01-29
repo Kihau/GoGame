@@ -87,15 +87,10 @@ void GameState::draw() {
     this->window->draw(this->btn);
 }
 
-void GameState::update() {
-    sf::Event event;
-    while (this->window->pollEvent(event)) {
+void GameState::update(const std::vector<sf::Event>& events) {
+    for (auto& event : events) {
         switch (event.type)
         {
-        case sf::Event::Closed:
-            this->window->close();
-            break;
-
         case sf::Event::MouseButtonReleased: {
             auto pos = sf::Mouse::getPosition(*window);
             auto map = this->window->mapPixelToCoords(pos);
@@ -111,6 +106,7 @@ void GameState::update() {
             auto pos = sf::Mouse::getPosition(*window);
             auto map = this->window->mapPixelToCoords(pos);
 
+            // Button - bag white
             auto wb = this->white_bag.getGlobalBounds();
             std::cout << wb.left << " " << wb.width << " " << wb.left + wb.width << "\n";            
             if (map.x >= wb.left && map.x <= wb.left + wb.width
@@ -119,6 +115,7 @@ void GameState::update() {
                     std::cout << "pressed white\n";
             }
 
+            // Button - bag black
             auto bb = this->black_bag.getGlobalBounds();
             if (map.x >= bb.left && map.x <= bb.left + bb.width
                 && map.y >= bb.top && map.y <= bb.top + bb.height) {
@@ -126,6 +123,7 @@ void GameState::update() {
                     std::cout << "pressed black\n";
             }
 
+            // Dispatching
             int index = -1;
             for (auto i = 0; i < this->buttons.size(); i++) {
                 auto b = this->buttons[i].getGlobalBounds();
@@ -134,6 +132,7 @@ void GameState::update() {
                     index = i;
             }
 
+            // Invoking event
             if (index == 0) this->board = std::make_unique<Board>();
             else if (index == 1) this->board->changeSwap();
             else if (index == 2) this->pop = true;
