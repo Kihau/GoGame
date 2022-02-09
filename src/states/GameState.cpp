@@ -21,11 +21,11 @@ GameState::GameState(sf::RenderWindow* window) {
     this->wbag_tex.loadFromFile("resources/textures/white-bag.png");
 
     this->white_bag.setTexture(this->wbag_tex);
-    this->white_bag.setPosition(1050, 350);
+    this->white_bag.setPosition(sf::Vector2f(1050, 350));
     this->white_bag.rotate(-90.0f);
     this->white_bag.setColor(sf::Color(220, 220, 220));
     this->black_bag.setTexture(this->bbag_tex);
-    this->black_bag.setPosition(1050, 1000);
+    this->black_bag.setPosition(sf::Vector2f(1050, 1000));
     this->black_bag.rotate(-90.0f);
     this->black_bag.setColor(sf::Color(220, 220, 220));
 
@@ -44,14 +44,14 @@ GameState::GameState(sf::RenderWindow* window) {
         txt.setOutlineColor(sf::Color(71, 34, 0));
     }
 
-    this->buttons[0].setPosition(1100, 400);
-    this->buttons[1].setPosition(1100, 550);
-    this->buttons[2].setPosition(1450, 50);
+    this->buttons[0].setPosition(sf::Vector2f(1100, 400));
+    this->buttons[1].setPosition(sf::Vector2f(1100, 550));
+    this->buttons[2].setPosition(sf::Vector2f(1450, 50));
 
-    this->buttons[3].setPosition(1370, 340);
-    this->buttons[4].setPosition(1370, 450);
-    this->buttons[5].setPosition(1370, 620);
-    this->buttons[6].setPosition(1370, 800);
+    this->buttons[3].setPosition(sf::Vector2f(1370, 340));
+    this->buttons[4].setPosition(sf::Vector2f(1370, 450));
+    this->buttons[5].setPosition(sf::Vector2f(1370, 620));
+    this->buttons[6].setPosition(sf::Vector2f(1370, 800));
 
 }
 

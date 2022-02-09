@@ -10,8 +10,8 @@ set(BUILD_SHARED_LIBS OFF)
 
 include(FetchContent)
 FetchContent_Declare(sfml
-    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
-    GIT_TAG "2.5.1"
+    GIT_REPOSITORY "https://github.com/Kihau/SFML.git"
+    # GIT_TAG "master"
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/sfml"
 )
 

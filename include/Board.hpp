@@ -3,12 +3,14 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include "Types.hpp"
 #include "Stone.hpp"
 #include "StoneGroup.hpp"
+
 
 class Board : public sf::Drawable {
 private:

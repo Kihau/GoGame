@@ -14,8 +14,6 @@ Animation::Animation() {
     
 }
 
-
-
 void Animation::addFrame(Frame&& frame) {
     this->frames.push_back(std::move(frame));
 }

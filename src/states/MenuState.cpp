@@ -21,7 +21,7 @@ MenuState::MenuState(sf::RenderWindow* window) {
 
     for (auto i = 0; i < strings.size(); i++) {
         auto txt = sf::Text(strings[i], this->font, 150);
-        txt.setPosition(770.0f, 350.0f + 140.0f * i);
+        txt.setPosition(sf::Vector2f(770.0f, 350.0f + 140.0f * i));
         txt.setFillColor(sf::Color::White);
         txt.setOutlineColor(sf::Color(71, 34, 0));
         this->buttons.push_back(txt);

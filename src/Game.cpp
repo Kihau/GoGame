@@ -7,22 +7,24 @@ Game::Game() {
     );
     this->window->setFramerateLimit(60);
 
-    this->gameView = sf::View(sf::FloatRect(0, 0, 1920.0f, 1080.0f));
+    this->gameView = sf::View(sf::FloatRect(sf::Vector2f(0, 0), sf::Vector2f(1920.0f, 1080.0f)));
     this->window->setView(gameView);   
 
     auto init_state = std::make_shared<MenuState>(this->window);
     this->states.push(init_state);
 
-    this->something.loadFromFile("resources/textures/white-sheet.png");
+    if (!this->something.loadFromFile("resources/textures/white-sheet.png"))
+        std::cout << "Failed to load";
+        
     this->idk.setTexture(this->something);
     this->anim = Animation(&idk);
-    this->idk.setPosition(200, 450);
-    this->idk.setScale(1.5f, 1.5f);
+    this->idk.setPosition(sf::Vector2f(200, 450));
+    this->idk.setScale(sf::Vector2f(1.5f, 1.5f));
 
-    this->anim.addFrame({ sf::IntRect(0, 0, 240, 240), 0.08 });
-    this->anim.addFrame({ sf::IntRect(0, 0, 240, 240), 0.08 });
-    for (int i = 0; i < 8; i++)
-        this->anim.addFrame({ sf::IntRect(i*240, 0, 240, 240), 0.08 });
+    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    for (int  i = 0; i < 8; i++)
+        this->anim.addFrame({ sf::IntRect(sf::Vector2i(i*240, 0), sf::Vector2i(240, 240)), 0.08 });
 }
 
 Game::~Game() { 

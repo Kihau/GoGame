@@ -26,15 +26,15 @@ Board::Board() {
     //this->sprite.setColor(sf::Color(255, 255, 255));
 
     /// TODO: fix to not be hardcoded
-    this->sprite.scale(0.48f, 0.48f);
+    this->sprite.scale(sf::Vector2f(0.48f, 0.48f));
     offset = (1012 - this->sprite.getGlobalBounds().width) / 2 + 34;
-    this->sprite.setPosition(offset, offset);
+    this->sprite.setPosition(sf::Vector2f(offset, offset));
 
     
     /// INITIALIZE STONES
 
     this->stone_texture.loadFromFile("resources/textures/white.png");
-    this->stone_sprite.setScale(this->stone_scale, this->stone_scale);
+    this->stone_sprite.setScale(sf::Vector2f(this->stone_scale, this->stone_scale));
 
     stone_sprite.setTexture(this->stone_texture);
     std::cout << "\n" << this->stone_sprite.getGlobalBounds().width << "\n";
@@ -114,11 +114,11 @@ void Board::makeMove(sf::Vector2f pos) {
     if (stone.turn == 0) {
         stone.turn = this->turn;
         auto stone_offset = 90 - this->stone_sprite.getGlobalBounds().width / 2;
-        stone.sprite.setPosition(x * 50 + stone_offset, y * 50 + stone_offset);
+        stone.sprite.setPosition(sf::Vector2f(x * 50 + stone_offset, y * 50 + stone_offset));
 
         this->last_move = sf::Vector2i(x, y);
         auto dot_offset = 90 - this->red_dot.getGlobalBounds().width / 2;
-        this->red_dot.setPosition(x * 50 + dot_offset, y * 50 + dot_offset);
+        this->red_dot.setPosition(sf::Vector2f(x * 50 + dot_offset, y * 50 + dot_offset));
 
         //////////////////////////////////////////////////////
         /// Group adding login - move somewhere else /////////
@@ -221,7 +221,7 @@ void Board::setHighlight(sf::Vector2f pos) {
     this->last_highlight.y = y;   
 
     auto stone_offset = 90 - this->stone_sprite.getGlobalBounds().width / 2;
-    this->stone_sprite.setPosition(x * 50 + stone_offset, y * 50 + stone_offset);
+    this->stone_sprite.setPosition(sf::Vector2f(x * 50 + stone_offset, y * 50 + stone_offset));
     if (this->stones[x + this->size * y].turn != 0)
         this->stone_sprite.setColor(sf::Color(255, 0, 0, 80));
     else if (this->turn == 1)
