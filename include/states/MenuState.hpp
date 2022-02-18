@@ -6,6 +6,7 @@
 #include "SFML/Graphics.hpp"
 #include "states/State.hpp"
 #include "states/GameState.hpp"
+#include "Animation.hpp"
 
 class MenuState : public State {
 private:
@@ -20,11 +21,15 @@ private:
 
     // menu "buttons"
     std::vector<sf::Text> buttons;
+
+    sf::Texture white_stone_tex;
+	sf::Sprite white_stone;
+	Animation anim;
     
 public:
     MenuState(sf::RenderWindow* window);
     void draw();
-    void update(const std::vector<sf::Event>&);
+    void update(const std::vector<sf::Event>&, sf::Time);
     bool stateChange(std::stack<std::shared_ptr<State>>&);
 };
 

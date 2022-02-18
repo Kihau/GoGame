@@ -26,6 +26,19 @@ MenuState::MenuState(sf::RenderWindow* window) {
         txt.setOutlineColor(sf::Color(71, 34, 0));
         this->buttons.push_back(txt);
     }
+
+    if (!this->white_stone_tex.loadFromFile("resources/textures/white-sheet.png"))
+        std::cout << "Failed to load";
+        
+    this->white_stone.setTexture(this->white_stone_tex);
+    this->anim = Animation(&white_stone);
+    this->white_stone.setPosition(sf::Vector2f(200, 450));
+    this->white_stone.setScale(sf::Vector2f(1.5f, 1.5f));
+
+    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    for (int  i = 0; i < 8; i++)
+        this->anim.addFrame({ sf::IntRect(sf::Vector2i(i*240, 0), sf::Vector2i(240, 240)), 0.08 });
 }
 
 
@@ -58,9 +71,13 @@ void MenuState::draw() {
         btn.setFillColor(sf::Color::White);
         this->window->draw(btn);
     }
+
+    this->window->draw(this->white_stone);
 }
 
-void MenuState::update(const std::vector<sf::Event>& events) {
+void MenuState::update(const std::vector<sf::Event>& events, sf::Time deltaTime) {
+    this->anim.update(deltaTime.asSeconds());
+
     for (auto& event : events) {
         switch (event.type)
         {

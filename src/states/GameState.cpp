@@ -87,7 +87,7 @@ void GameState::draw() {
     this->window->draw(this->btn);
 }
 
-void GameState::update(const std::vector<sf::Event>& events) {
+void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime) {
     for (auto& event : events) {
         switch (event.type)
         {

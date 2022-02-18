@@ -12,19 +12,6 @@ Game::Game() {
 
     auto init_state = std::make_shared<MenuState>(this->window);
     this->states.push(init_state);
-
-    if (!this->something.loadFromFile("resources/textures/white-sheet.png"))
-        std::cout << "Failed to load";
-        
-    this->idk.setTexture(this->something);
-    this->anim = Animation(&idk);
-    this->idk.setPosition(sf::Vector2f(200, 450));
-    this->idk.setScale(sf::Vector2f(1.5f, 1.5f));
-
-    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
-    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
-    for (int  i = 0; i < 8; i++)
-        this->anim.addFrame({ sf::IntRect(sf::Vector2i(i*240, 0), sf::Vector2i(240, 240)), 0.08 });
 }
 
 Game::~Game() { 
@@ -38,18 +25,15 @@ void Game::run() {
         this->dispatchEvents();
         this->logEvents();
 
-        this->states.top()->update(this->events);
+        this->states.top()->update(this->events, this->deltaTime);
 
         this->events.clear();
         if (this->states.top()->stateChange(this->states))
             continue;
 
-        this->anim.update(this->deltaTime.asSeconds());
-
         this->window->clear(sf::Color::Black);
 
         this->states.top()->draw();
-        //this->window->draw(this->idk);
         this->window->display();
 
         this->deltaTime = currTime - this->prevTime;
@@ -82,7 +66,7 @@ void Game::logEvents() {
         
         auto pos = sf::Mouse::getPosition();
         std::cout << "Mouse pos x: " << pos.x << " y: " << pos.y << "\n";
-        std::cout << "Delta: " << this->deltaTime.asMicroseconds() << "ms\n";
+        std::cout << "Delta: " << this->deltaTime.asMicroseconds() << "μs\n";
 
         this->logTime = sf::Time();
     }

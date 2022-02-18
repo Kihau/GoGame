@@ -18,7 +18,7 @@ public:
     virtual void draw() = 0;
     // true  - IState unchanged
     // false - IState changed
-    virtual void update(const std::vector<sf::Event>&) = 0;
+    virtual void update(const std::vector<sf::Event>&, sf::Time) = 0;
     virtual bool stateChange(std::stack<std::shared_ptr<State>>&) = 0;
 };
 

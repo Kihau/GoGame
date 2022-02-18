@@ -35,10 +35,6 @@ private:
 	const i32 log_delay = 500;
 	sf::Time logTime;
 
-	sf::Texture something;
-	sf::Sprite idk;
-	Animation anim;
-
 private:
 	void dispatchEvents();
 	void logEvents();

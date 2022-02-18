@@ -48,6 +48,12 @@ public:
 
 #include <math.h>
 
+// Opcje
+// Zapis do pliku
+// Czas spedzony w grze
+// Ilosc ruchow
+// Zapis planczy - kamienie i zdjecia planszy
+
 int main() {
     Random::init();
 

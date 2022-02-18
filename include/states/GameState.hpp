@@ -43,7 +43,7 @@ public:
     //GameState();
     GameState(sf::RenderWindow*);
     void draw();
-    void update(const std::vector<sf::Event>&);
+    void update(const std::vector<sf::Event>&, sf::Time);
     bool stateChange(std::stack<std::shared_ptr<State>>&);
 };
 
