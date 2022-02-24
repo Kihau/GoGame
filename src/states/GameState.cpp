@@ -21,12 +21,12 @@ GameState::GameState(sf::RenderWindow* window) {
     this->wbag_tex.loadFromFile("resources/textures/white-bag.png");
 
     this->white_bag.setTexture(this->wbag_tex);
-    this->white_bag.setPosition(sf::Vector2f(1050, 350));
-    this->white_bag.rotate(-90.0f);
+    this->white_bag.setPosition(sf::Vector2f(1050, 320));
+    this->white_bag.rotate(sf::degrees(-90.0f));
     this->white_bag.setColor(sf::Color(220, 220, 220));
     this->black_bag.setTexture(this->bbag_tex);
-    this->black_bag.setPosition(sf::Vector2f(1050, 1000));
-    this->black_bag.rotate(-90.0f);
+    this->black_bag.setPosition(sf::Vector2f(1050, 1030));
+    this->black_bag.rotate(sf::degrees(-90.0f));
     this->black_bag.setColor(sf::Color(220, 220, 220));
 
     this->buttons = { 
@@ -37,6 +37,8 @@ GameState::GameState(sf::RenderWindow* window) {
         sf::Text("Black score: 0", this->font, 80),
         sf::Text("Swap state: on", this->font, 80),
         sf::Text("Current turn:\n     white", this->font, 80),
+        sf::Text("save", this->font, 100),
+        sf::Text("load", this->font, 100),
     };
 
     for (auto& txt : this->buttons) {
@@ -44,8 +46,9 @@ GameState::GameState(sf::RenderWindow* window) {
         txt.setOutlineColor(sf::Color(71, 34, 0));
     }
 
-    this->buttons[0].setPosition(sf::Vector2f(1100, 400));
-    this->buttons[1].setPosition(sf::Vector2f(1100, 550));
+    this->buttons[0].setPosition(sf::Vector2f(1100, 310));
+    this->buttons[1].setPosition(sf::Vector2f(1100, 420));
+
     this->buttons[2].setPosition(sf::Vector2f(1450, 50));
 
     this->buttons[3].setPosition(sf::Vector2f(1370, 340));
@@ -53,6 +56,8 @@ GameState::GameState(sf::RenderWindow* window) {
     this->buttons[5].setPosition(sf::Vector2f(1370, 620));
     this->buttons[6].setPosition(sf::Vector2f(1370, 800));
 
+    this->buttons[7].setPosition(sf::Vector2f(1100, 530));
+    this->buttons[8].setPosition(sf::Vector2f(1100, 640));
 }
 
 void GameState::draw() {
@@ -94,10 +99,6 @@ void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
         case sf::Event::MouseButtonReleased: {
             auto pos = sf::Mouse::getPosition(*window);
             auto map = this->window->mapPixelToCoords(pos);
-            std::cout << pos.x << " " << pos.y << "\n";
-            std::cout << map.x << " " << map.y << "\n";
-            std::cout << "\n";
-
             this->board->update(map, true);
             break;
         }
@@ -108,11 +109,9 @@ void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
 
             // Button - bag white
             auto wb = this->white_bag.getGlobalBounds();
-            std::cout << wb.left << " " << wb.width << " " << wb.left + wb.width << "\n";            
             if (map.x >= wb.left && map.x <= wb.left + wb.width
                 && map.y >= wb.top && map.y <= wb.top + wb.height) {
                     this->board->setTurn(2);
-                    std::cout << "pressed white\n";
             }
 
             // Button - bag black
@@ -120,10 +119,9 @@ void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
             if (map.x >= bb.left && map.x <= bb.left + bb.width
                 && map.y >= bb.top && map.y <= bb.top + bb.height) {
                     this->board->setTurn(1);
-                    std::cout << "pressed black\n";
             }
 
-            // Dispatching
+            // Dispatching text "buttons"
             int index = -1;
             for (auto i = 0; i < this->buttons.size(); i++) {
                 auto b = this->buttons[i].getGlobalBounds();
@@ -136,6 +134,17 @@ void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
             if (index == 0) this->board = std::make_unique<Board>();
             else if (index == 1) this->board->changeSwap();
             else if (index == 2) this->pop = true;
+            else if (index == 7) {
+                std::ofstream file("boardsave.dat", std::ios::binary);
+                file << (*board);
+                file.close();
+            }
+            else if (index == 8) {
+                std::ifstream file("boardsave.dat", std::ios::binary);
+                if (file) 
+                    file >> (*board);
+                file.close();
+            }
         }
 
         case sf::Event::MouseMoved: {
@@ -150,7 +159,7 @@ void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
                 || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 this->pop = true;
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
-                this->push = true;
+                this->push = std::make_shared<GameState>(this->window);
             break;
 
         case sf::Event::Resized:
@@ -172,21 +181,4 @@ void GameState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
 
     s = "Current turn:\n     " + this->board->getTurnString();
     this->buttons[6].setString(s);
-}
-
-bool GameState::stateChange(std::stack<std::shared_ptr<State>>& states) {
-    if (this->push) {
-        this->push = false;
-        auto state = std::make_shared<GameState>(this->window);
-        states.push(state);
-        return true;
-    } 
-
-    if (this->pop) {
-        this->pop = false;
-        states.pop();
-        return true;
-    } 
-
-    return false;
 }

@@ -8,20 +8,22 @@ MenuState::MenuState(sf::RenderWindow* window) {
 
     this->font.loadFromFile("resources/fonts/dpcomic.ttf");
     this->title = sf::Text("GoGame", this->font, 300);
-    this->title.setPosition(sf::Vector2f(500.0f, 0.0f));
+    float title_pos_x = (this->window->getView().getSize().x / 2.0) - (title.getGlobalBounds().width / 2.0);
+    this->title.setPosition(sf::Vector2f(title_pos_x, 0.0f));
     this->title.setFillColor(sf::Color::White);
     this->title.setOutlineColor(sf::Color(71, 34, 0));
 
     std::vector<std::string> strings {
         "start",
-        "options",
-        "about",
+        "settings",
+        "statistics",
         "exit",
     };
 
     for (auto i = 0; i < strings.size(); i++) {
         auto txt = sf::Text(strings[i], this->font, 150);
-        txt.setPosition(sf::Vector2f(770.0f, 350.0f + 140.0f * i));
+        float pos_x = (this->window->getView().getSize().x / 2.0) - (txt.getGlobalBounds().width / 2.0);
+        txt.setPosition(sf::Vector2f(pos_x, 350.0f + 140.0f * i));
         txt.setFillColor(sf::Color::White);
         txt.setOutlineColor(sf::Color(71, 34, 0));
         this->buttons.push_back(txt);
@@ -31,14 +33,27 @@ MenuState::MenuState(sf::RenderWindow* window) {
         std::cout << "Failed to load";
         
     this->white_stone.setTexture(this->white_stone_tex);
-    this->anim = Animation(&white_stone);
+    this->white_anim = Animation(&white_stone);
     this->white_stone.setPosition(sf::Vector2f(200, 450));
     this->white_stone.setScale(sf::Vector2f(1.5f, 1.5f));
 
-    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
-    this->anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    this->white_anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    this->white_anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
     for (int  i = 0; i < 8; i++)
-        this->anim.addFrame({ sf::IntRect(sf::Vector2i(i*240, 0), sf::Vector2i(240, 240)), 0.08 });
+        this->white_anim.addFrame({ sf::IntRect(sf::Vector2i(i*240, 0), sf::Vector2i(240, 240)), 0.08 });
+
+    if (!this->black_stone_tex.loadFromFile("resources/textures/black-sheet.png"))
+        std::cout << "Failed to load";
+
+    this->black_stone.setTexture(this->black_stone_tex);
+    this->black_anim = Animation(&black_stone);
+    this->black_stone.setPosition(sf::Vector2f(1350, 450));
+    this->black_stone.setScale(sf::Vector2f(1.5f, 1.5f));
+
+    this->black_anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    this->black_anim.addFrame({ sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(240, 240)), 0.08 });
+    for (int  i = 0; i < 8; i++)
+        this->black_anim.addFrame({ sf::IntRect(sf::Vector2i(i*240, 0), sf::Vector2i(240, 240)), 0.08 });
 }
 
 
@@ -73,19 +88,23 @@ void MenuState::draw() {
     }
 
     this->window->draw(this->white_stone);
+    this->window->draw(this->black_stone);
 }
 
 void MenuState::update(const std::vector<sf::Event>& events, sf::Time deltaTime) {
-    this->anim.update(deltaTime.asSeconds());
+    this->white_anim.update(deltaTime.asSeconds());
+    this->black_anim.update(deltaTime.asSeconds());
 
     for (auto& event : events) {
         switch (event.type)
         {
         case sf::Event::MouseButtonReleased: {
             auto pos = sf::Mouse::getPosition(*window);
-            std::cout << "Relative click - x: " << pos.x << " y: " << pos.y << "\n";
             auto map = this->window->mapPixelToCoords(pos);
-            std::cout << "Absolute click - x: " << map.x << " y: " << map.y << "\n\n";
+            if (Settings::enableLogging) {
+                std::cout << "Relative click - x: " << pos.x << " y: " << pos.y << "\n";
+                std::cout << "Absolute click - x: " << map.x << " y: " << map.y << "\n\n";
+            }
 
             int index = -1;
             for (auto i = 0; i < this->buttons.size(); i++) {
@@ -95,7 +114,9 @@ void MenuState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
                     index = i;
             }
 
-            if (index == 0) this->push = true;
+            if (index == 0) this->push = std::make_shared<GameState>(this->window);
+            else if (index == 1) this->push = std::make_shared<SettingsState>(this->window);
+            else if (index == 2) this->push = std::make_shared<StatsState>(this->window);
             else if (index == 3) this->pop = true;
 
             break;
@@ -106,27 +127,10 @@ void MenuState::update(const std::vector<sf::Event>& events, sf::Time deltaTime)
                 || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 this->pop = true;
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) 
-                this->push = true;
+                this->push = std::make_shared<GameState>(this->window);
             break;
 
         }
 
     }
-}
-
-bool MenuState::stateChange(std::stack<std::shared_ptr<State>>& states) {
-    if (this->push) {
-        this->push = false;
-        auto state = std::make_shared<GameState>(this->window);
-        states.push(state);
-        return true;
-    } 
-
-    if (this->pop) {
-        this->pop = false;
-        states.pop();
-        return true;
-    } 
-
-    return false;
 }

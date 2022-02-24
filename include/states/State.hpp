@@ -10,7 +10,7 @@ class State {
 protected:
     sf::RenderWindow* window;
     bool pop = false;
-    bool push = false;
+    std::shared_ptr<State> push = nullptr;
 
 public:
     //virtual IState(sf::RenderWindow* window) = 0;
@@ -19,7 +19,7 @@ public:
     // true  - IState unchanged
     // false - IState changed
     virtual void update(const std::vector<sf::Event>&, sf::Time) = 0;
-    virtual bool stateChange(std::stack<std::shared_ptr<State>>&) = 0;
+    virtual bool stateChange(std::stack<std::shared_ptr<State>>&);
 };
 
 #endif

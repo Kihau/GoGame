@@ -8,7 +8,7 @@ Button::Button(sf::Font font, const sf::Vector2f& size) {
     this->base.setSize(size);
 }
 
-void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void Button::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
     target.draw(this->base, states);
     target.draw(this->caption, states);
 }

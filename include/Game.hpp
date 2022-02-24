@@ -4,11 +4,15 @@
 #include <iostream>
 #include <stack>
 #include <memory>
+#include <iomanip>
 #include "SFML/Graphics.hpp"
 
 #include "Types.hpp"
 #include "Board.hpp"
 #include "gui/Button.hpp"
+
+#include "Stats.hpp"
+#include "Settings.hpp"
 
 //#include "states/IState.hpp"
 #include "states/GameState.hpp"
@@ -31,9 +35,13 @@ private:
 	sf::Clock gameClock;
 	sf::Time deltaTime;
 	sf::Time prevTime;
+	sf::Time totalTime;
 
 	const i32 log_delay = 500;
 	sf::Time logTime;
+
+	sf::Font fps_font;
+	sf::Text fps;
 
 private:
 	void dispatchEvents();

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "SFML/Graphics.hpp"
 
 #include "states/State.hpp"
@@ -44,7 +45,7 @@ public:
     GameState(sf::RenderWindow*);
     void draw();
     void update(const std::vector<sf::Event>&, sf::Time);
-    bool stateChange(std::stack<std::shared_ptr<State>>&);
+    //bool stateChange(std::stack<std::shared_ptr<State>>&);
 };
 
 #endif

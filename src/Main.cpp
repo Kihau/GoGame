@@ -2,6 +2,8 @@
 #include "Random.hpp"
 
 #include "Types.hpp"
+#include "Stats.hpp"
+#include "Settings.hpp"
 
 /*  TO DO LIST: 
 -----------------------------------------------------------------------------
@@ -47,50 +49,38 @@ public:
 };
 
 #include <math.h>
+#include <iostream>
+#include <fstream>
 
-// Opcje
-// Zapis do pliku
-// Czas spedzony w grze
-// Ilosc ruchow
-// Zapis planczy - kamienie i zdjecia planszy
+/* TESTING - TO DO
+    - [x] Zapis planszy - binary
+    - [x] Zapis wygladu planszy
+    - [x] Opcje
+    - [x] Statystyki
+*/
+
+// Settings:
+//  - enable sounds
+//  - fixed fps (on/off)
+//  - logging
+//  - show fps
 
 int main() {
     Random::init();
 
-    //char znaki[] = "234";
-    //char array[] = { '2', '3', '4', '\0' };
+    Settings::load();
 
-    //znaki[1] = '2';
-    //std::cout << znaki << "\n";
-
-    {
-        sf::RectangleShape rect(sf::Vector2f(100, 100));
-        rect.setFillColor(sf::Color::Transparent);
-        rect.setOutlineColor(sf::Color::Black);
-        rect.setOutlineThickness(3.3f);
+    if (!Stats::load()) {
+        std::cerr << "Failed to load stats, values reset to defaults\n";
     }
-
-    //const char *test = "Hello";
-    //test[1] = 'a';
-
-    //f80 a = 1.1;
-    //std::cout << sizeof(long double) << "\n";
-    //f128 b = 1.1;
-    //std::cout << b << "\n";
-
-    //Thingy thing(true, 10);
-    //std::cout << thing.num << "\n";
-
-    //std::cout << sizeof(i128) << "\n";
 
     Game go_game;
     go_game.run();
 
-    //std::cout << countLen("Hello") << "\n";
-
-    //TestClass test;
-    //std::cout << test.return_two();
-
+    // save stats every 15 minutes?
+    Stats::save();
+    Settings::save();
+    
     return 0;
 }
 

@@ -10,7 +10,7 @@
 #include "Types.hpp"
 #include "Stone.hpp"
 #include "StoneGroup.hpp"
-
+#include "Settings.hpp"
 
 class Board : public sf::Drawable {
 private:
@@ -44,6 +44,13 @@ private:
     void setHighlight(sf::Vector2f pos);
     void clearHighlight();
 
+    void groupAdd(sf::Vector2i, i32 color);
+    void groupErase(sf::Vector2i);
+
+    sf::Vector2i getPosFromCoords(sf::Vector2f);
+    sf::Vector2i getPosFromIndex(i32);
+    i32 getIndexFromPos(sf::Vector2i);
+
     sf::SoundBuffer buffer;
     sf::Sound stone_sound;
 
@@ -53,7 +60,7 @@ public:
     /// TODO: this vvv
     Board(size_t size);
     ~Board();
-    void draw(sf::RenderTarget&, sf::RenderStates) const;
+    void draw(sf::RenderTarget&, const sf::RenderStates&) const;
     void update(sf::Vector2f pos, bool);
     void setTurn(i32);
     std::string getTurnString();
@@ -61,6 +68,13 @@ public:
     bool getSwapState();
     i32 getScoreWhite();
     i32 getScoreBlack();
+
+    friend std::ostream &operator<<(std::ostream&, const Board&);
+    friend std::istream &operator>>(std::istream&, Board&);
+    void serialize(std::ostream&) const;
+    void deserialize(std::istream&);
+
+    void saveImage() const;
 };
 
 #endif
